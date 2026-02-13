@@ -1,9 +1,9 @@
 "use client"
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
 import { Badge } from "@/components/ui/badge"
 import { PenBoxIcon, Trash } from "lucide-react"
-import { deleteItem, updateItem } from "@/server-actions/admin/route"
+import { deleteItem, updateItem } from "@/server-actions/admin/menu/route"
 import {
   Dialog,
   DialogContent,
@@ -24,16 +24,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Input } from "./ui/input"
-import { Textarea } from "./ui/textarea"
+import { Input } from "../ui/input"
+import { Textarea } from "../ui/textarea"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select"
-import { Button } from "./ui/button"
+} from "../ui/select"
+import { Button } from "../ui/button"
 type Data = {
   id: string
   name: string

@@ -11,3 +11,9 @@ export const MenuItemSchema = z.object({
 });
 
 export type MenuItemInput = z.infer<typeof MenuItemSchema>;
+
+export const tableSchema = z.object({
+  tableNumber : z.number()
+
+})
+export type tableInput = z.infer<typeof tableSchema>

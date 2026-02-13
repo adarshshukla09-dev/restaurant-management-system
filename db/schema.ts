@@ -8,6 +8,7 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 import { users} from "./auth-schema";
+import { number } from "zod";
 
 
 
@@ -42,7 +43,7 @@ export const mealTime = pgEnum("meal_time", [
 export const restaurantTables = pgTable("restaurant_tables", {
   id: uuid("id").primaryKey().defaultRandom(),
 
-  tableNumber: text("table_number").notNull(),
+tableNumber: integer("table_number").unique().notNull(),
 qrToken: uuid("qr_token")
     .defaultRandom()
     .notNull()

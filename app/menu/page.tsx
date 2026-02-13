@@ -1,5 +1,5 @@
 import AllItem from "@/components/AllItem";
-import { CreateMenuComp } from "@/components/CreateItems";
+import { CreateMenuComp } from "@/components/menu/CreateItems";
 import React from "react";
 
 function page() {

@@ -1,4 +1,4 @@
-import { readAll } from "@/server-actions/admin/route";
+import { readAll } from "@/server-actions/admin/menu/route";
 import React from "react";
 import MenuCard from "./MenuCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
