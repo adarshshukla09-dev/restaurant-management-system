@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { MenuItemInput, MenuItemSchema } from "@/lib/vaildator/admin";
 import { menu } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 export const createItem = async (menuItem: MenuItemInput) => {
   try {
@@ -17,6 +18,7 @@ export const createItem = async (menuItem: MenuItemInput) => {
       .insert(menu)
       .values({ ...data })
       .returning();
+      revalidatePath("/menu")
 
     return { success: true, data: newItem };
   } catch (error) {
@@ -31,6 +33,18 @@ export const readAll = async () => {
     const wholeMenu = await db.select().from(menu);
 
     return { success :true , data :wholeMenu}
+  } catch (error) {
+    console.log(
+      error instanceof Error ? error.message : "some internal server error",
+    );
+  }
+};
+export const readItem = async (  id: string,
+) => {
+  try {
+  const item = db.select().from(menu).where(eq(menu.id,id));
+
+    return { success :true , data :item}
   } catch (error) {
     console.log(
       error instanceof Error ? error.message : "some internal server error",
@@ -55,6 +69,7 @@ export const updateItem = async (
       .where(eq(menu.id, id))
       .returning();
 
+      revalidatePath("/menu")
     return { success: true, data: updated };
   } catch (error) {
     console.log(
@@ -68,6 +83,8 @@ export const deleteItem = async(id:string
 )=>{
 try {
   const deleted = db.delete(menu).where(eq(menu.id,id)).returning();
+        revalidatePath("/menu")
+
     return { success: true, data: deleted };
 } catch (error) {
   console.log(

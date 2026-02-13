@@ -1,6 +1,6 @@
 {
-  "id": "4f3d84f9-2dc4-40c8-b1b8-297cc591e0ec",
-  "prevId": "bf871049-02ac-490e-8da3-f54643acd89b",
+  "id": "da3092c5-bf9a-4a0a-8084-54da8e0cdf71",
+  "prevId": "4f3d84f9-2dc4-40c8-b1b8-297cc591e0ec",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -179,7 +179,7 @@
         },
         "waiter_id": {
           "name": "waiter_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },

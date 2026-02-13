@@ -1,0 +1,1 @@
+ALTER TABLE "orders" ALTER COLUMN "waiter_id" SET DATA TYPE text;

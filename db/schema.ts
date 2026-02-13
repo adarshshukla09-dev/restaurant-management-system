@@ -7,16 +7,11 @@ import {
   integer,
   boolean,
 } from "drizzle-orm/pg-core";
-import { user } from "./auth-schema";
+import { users} from "./auth-schema";
 
 
 
-export const userRoles = pgEnum("user_roles", [
-  "ADMIN",
-  "WAITER",
-  "CASHIER",
-  "KITCHEN",
-]);
+
 
 export const tableStatus = pgEnum("table_status", [
   "FREE",
@@ -48,7 +43,10 @@ export const restaurantTables = pgTable("restaurant_tables", {
   id: uuid("id").primaryKey().defaultRandom(),
 
   tableNumber: text("table_number").notNull(),
-
+qrToken: uuid("qr_token")
+    .defaultRandom()
+    .notNull()
+    .unique(),
   status: tableStatus("status").default("FREE").notNull(),
 
   createdAt: timestamp("created_at").defaultNow(),
@@ -81,8 +79,7 @@ export const orders = pgTable("orders", {
     .notNull()
     .references(() => restaurantTables.id, { onDelete: "cascade" }),
 
-  waiterId: uuid("waiter_id").references(() => user.id),
-
+waiterId: text("waiter_id").references(() => users.id),
   status: orderStatus("status").default("PENDING").notNull(),
 
   createdAt: timestamp("created_at").defaultNow(),

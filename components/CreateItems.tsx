@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { createItem } from "@/server-actions/admin/route"
+import { number } from "zod"
 
 export  function CreateMenuComp() {
   const form = useForm<MenuItemInput>({
@@ -32,23 +33,26 @@ export  function CreateMenuComp() {
     },
   })
 
-  async function onSubmit(values) {
-    // convert price to cents for DB
+async function onSubmit(values: MenuItemInput) {
+  try {
     const payload = {
       ...values,
       price: values.price * 100,
     }
 
-    console.log(payload)
-    
-const created = await createItem(payload)
-console.log("created sucessfully")
+    const created = await createItem(payload)
 console.log(created)
-    
+    if (created) {
+      form.reset()
+    }
+
+  } catch (error) {
+    console.error("Failed to create item", error)
   }
+}
 
   return (
- <div className="min-h-screen bg-muted/40 py-10 px-4">
+ <div className=" bg-muted/40 py-10 px-4">
   <div className="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl p-8 space-y-8">
     
     <div className="space-y-1">
@@ -105,7 +109,7 @@ console.log(created)
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  className="min-h-[100px]"
+                  className="min-h-25"
                   placeholder="Fresh tomatoes, mozzarella, basil..."
                   {...field}
                 />
@@ -132,7 +136,7 @@ console.log(created)
                     className="pl-8"
                     {...field}
                     onChange={(e) =>
-                      field.onChange(e.target.valueAsNumber)
+                      field.onChange(e.target.value == "" ? 0 : Number(e.target.value))
                     }
                   />
                 </div>
@@ -150,7 +154,7 @@ console.log(created)
             <FormItem>
               <FormLabel>Image URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://..." {...field} />
+                <Input type="url" placeholder="https://..." {...field} />
               </FormControl>
 
               {field.value && (
@@ -179,7 +183,7 @@ console.log(created)
                 <FormLabel>Food Type</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
