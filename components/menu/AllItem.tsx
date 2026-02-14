@@ -17,7 +17,8 @@ type data = {
 
 const menu = await readAll();
 const data = menu?.data || [];
-
+console.log(data)
+console.log(menu)
 const renderItems = (type?: "VEG" | "NONVEG") => {
   const filtered = type
     ? data.filter((item) => item.foodType === type)
@@ -40,10 +41,9 @@ const renderItems = (type?: "VEG" | "NONVEG") => {
   );
 };
 
-function AllItem() {
+function AllItem(  ) {
   return (
     <div className="w-full flex gap-2 justify-around m-5 ">
-
       <Tabs defaultValue="all" className="text-center  space-y-6">
         <TabsList className=" mx-auto" >
           <TabsTrigger  value="all">All</TabsTrigger>

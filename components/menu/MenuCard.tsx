@@ -34,6 +34,7 @@ import {
   SelectValue,
 } from "../ui/select"
 import { Button } from "../ui/button"
+import { useTable } from "@/lib/context/TableContext"
 type Data = {
   id: string
   name: string
@@ -47,6 +48,7 @@ type Data = {
 }
 
 function MenuCard({ item }: { item: Data }) {
+  const tableToken = useTable();
   const router = useRouter() // 🔑 App Router refresh
   const formattedPrice = (item.price / 100).toFixed(2)
   const [isEditOpen, setIsEditOpen] = useState(false)
@@ -96,12 +98,14 @@ function MenuCard({ item }: { item: Data }) {
           ₹ {formattedPrice}
         </Badge>
         <Badge variant="secondary" className="absolute bottom-3 left-3">
-          {item.category}
+          {item.category},
+         
         </Badge>
       </div>
 
       <CardHeader>
         <CardTitle className="text-lg line-clamp-1">{item.name}</CardTitle>
+        <CardTitle className="text-lg line-clamp-1"> {tableToken}</CardTitle>
         <CardDescription className="line-clamp-2">
           {item.description || "Delicious and freshly prepared."}
         </CardDescription>

@@ -19,7 +19,7 @@ export const createItem = async (menuItem: MenuItemInput) => {
       .values({ ...data })
       .returning();
       revalidatePath("/menu")
-
+console.log(newItem)
     return { success: true, data: newItem };
   } catch (error) {
     console.log(

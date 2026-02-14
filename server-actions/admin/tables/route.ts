@@ -4,7 +4,6 @@ import { restaurantTables } from "@/db/schema";
 import { tableInput } from "@/lib/vaildator/admin";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { success } from "zod";
 export const createTable = async (data:tableInput) => {
   try {
 //   tableNumber: text("table_number").unique().notNull(),

@@ -86,7 +86,7 @@ waiterId: text("waiter_id").references(() => users.id),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-
+ 
 
 export const orderItems = pgTable("order_items", {
   id: uuid("id").primaryKey().defaultRandom(),

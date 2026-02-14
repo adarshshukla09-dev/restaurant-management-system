@@ -12,7 +12,7 @@ export default async function Page() {
     data.map(async (table) => {
       // PRO TIP: In production, replace localhost with your actual domain environment variable
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
-      const url = `${baseUrl}/menu?table=${table.qrToken}`;
+      const url = `${baseUrl}/menu?table=${table.id}`;
       const qrImage = await QRCode.toDataURL(url);
 
       return {
