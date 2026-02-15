@@ -1,7 +1,7 @@
 "use server"
 import { db } from "@/db";
 import { restaurantTables } from "@/db/schema";
-import { tableInput } from "@/lib/vaildator/admin";
+import { tableInput } from "@/lib/vaildator/table";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 export const createTable = async (data:tableInput) => {

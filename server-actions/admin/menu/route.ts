@@ -1,6 +1,6 @@
 "use server"
 import { db } from "@/db";
-import { MenuItemInput, MenuItemSchema } from "@/lib/vaildator/admin";
+import { MenuItemInput, MenuItemSchema } from "@/lib/vaildator/table";
 import { menu } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -68,7 +68,7 @@ export const updateItem = async (
       .set(result.data)
       .where(eq(menu.id, id))
       .returning();
-
+console.log(updated)
       revalidatePath("/menu")
     return { success: true, data: updated };
   } catch (error) {
@@ -82,7 +82,7 @@ export const updateItem = async (
 export const deleteItem = async(id:string
 )=>{
 try {
-  const deleted = db.delete(menu).where(eq(menu.id,id)).returning();
+  const deleted = await db.delete(menu).where(eq(menu.id,id)).returning();
         revalidatePath("/menu")
 
     return { success: true, data: deleted };
