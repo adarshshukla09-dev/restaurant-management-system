@@ -25,7 +25,7 @@ export const orderStatus = pgEnum("order_status", [
   "PREPARING",
   "READY",
   "SERVED",
-  "PAID",
+  "PAID"
 ]);
 
 export const foodType = pgEnum("food_type", ["VEG", "NONVEG"]);

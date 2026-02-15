@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, Loader2 } from "lucide-react";
 
-import { tableInput, tableSchema } from "@/lib/vaildator/admin";
+import { tableInput, tableSchema } from "@/lib/vaildator/table";
 import { createTable } from "@/server-actions/admin/tables/route";
 
 import { Button } from "@/components/ui/button";

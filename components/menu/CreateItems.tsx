@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import {MenuItemSchema,MenuItemInput} from "@/lib/vaildator/admin"
+import {MenuItemSchema,MenuItemInput} from "@/lib/vaildator/table"
 import {
   Form,
   FormControl,
@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { createItem } from "@/server-actions/admin/menu/route"
 import { number } from "zod"
+import { Utensils } from "lucide-react"
 
 export  function CreateMenuComp() {
   const form = useForm<MenuItemInput>({
@@ -52,47 +53,63 @@ console.log(created)
 }
 
   return (
- <div className=" bg-muted/40 py-10 px-4">
-  <div className="max-w-2xl mx-auto bg-white shadow-xl rounded-2xl p-8 space-y-8">
+ // Inside your CreateMenuComp return...
+<div className="bg-slate-50/50 py-12 px-4 min-h-screen">
+  <div className="max-w-2xl mx-auto bg-white shadow-sm border border-slate-200 rounded-3xl p-8 space-y-8">
     
-    <div className="space-y-1">
-      <h2 className="text-2xl font-semibold tracking-tight">
-        Create Menu Item
-      </h2>
-      <p className="text-muted-foreground text-sm">
-        Add a new item to your restaurant menu.
-      </p>
+    <div className="flex justify-between items-start">
+      <div className="space-y-1">
+        <h2 className="text-3xl font-black text-slate-900 tracking-tight">Add to Menu</h2>
+        <p className="text-slate-500 text-sm">Configure your dish details and pricing.</p>
+      </div>
+      <div className="h-12 w-12 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600">
+        <Utensils className="size-6" />
+      </div>
     </div>
 
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* Row 1: Item Name */}
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold text-slate-700">Dish Title</FormLabel>
+              <FormControl>
+                <Input className="h-11 rounded-xl border-slate-200 focus:ring-orange-500" placeholder="e.g. Truffle Mushroom Risotto" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        {/* Name + Category Row */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Name */}
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Item Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Margherita Pizza" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Category */}
-          <FormField
+        {/* Grid: Category + Price */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           <FormField
             control={form.control}
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Category</FormLabel>
+                <FormLabel className="font-bold text-slate-700">Category</FormLabel>
                 <FormControl>
-                  <Input placeholder="Pizza" {...field} />
+                  <Input className="h-11 rounded-xl" placeholder="Main Course" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="font-bold text-slate-700">Price</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <span className="absolute left-4 top-3 text-slate-400 font-medium">₹</span>
+                    <Input type="number" className="pl-8 h-11 rounded-xl" {...field} />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -100,140 +117,13 @@ console.log(created)
           />
         </div>
 
-        {/* Description */}
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl>
-                <Textarea
-                  className="min-h-25"
-                  placeholder="Fresh tomatoes, mozzarella, basil..."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Price */}
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price (₹)</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <span className="absolute left-3 top-2.5 text-muted-foreground">
-                    ₹
-                  </span>
-                  <Input
-                    type="number"
-                    className="pl-8"
-                    {...field}
-                    onChange={(e) =>
-                      field.onChange(e.target.value == "" ? 0 : Number(e.target.value))
-                    }
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Image URL + Preview */}
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Image URL</FormLabel>
-              <FormControl>
-                <Input type="url" placeholder="https://..." {...field} />
-              </FormControl>
-
-              {field.value && (
-                <div className="mt-3 rounded-lg overflow-hidden border">
-                  <img
-                    src={field.value}
-                    alt="Preview"
-                    className="w-full h-48 object-cover"
-                  />
-                </div>
-              )}
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* Select Row */}
-        <div className="grid grid-cols-2 gap-4">
-          {/* Food Type */}
-          <FormField
-            control={form.control}
-            name="foodType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Food Type</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="VEG">🥦 Veg</SelectItem>
-                    <SelectItem value="NONVEG">🍗 Non Veg</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* Meal Time */}
-          <FormField
-            control={form.control}
-            name="mealTime"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Meal Time</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select time" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="BREAKFAST">🌅 Breakfast</SelectItem>
-                    <SelectItem value="LUNCH">🌤 Lunch</SelectItem>
-                    <SelectItem value="DINNER">🌙 Dinner</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        {/* Submit */}
-        <Button
-          type="submit"
-          className="w-full h-11 text-base rounded-lg"
+        {/* Submit with Loading State (Recommended) */}
+        <Button 
+          disabled={form.formState.isSubmitting}
+          type="submit" 
+          className="w-full h-12 bg-slate-900 hover:bg-black text-white rounded-xl font-bold transition-all active:scale-[0.98]"
         >
-          Create Menu Item
+          {form.formState.isSubmitting ? "Saving..." : "Publish to Menu"}
         </Button>
       </form>
     </Form>

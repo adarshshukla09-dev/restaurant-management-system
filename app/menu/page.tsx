@@ -1,17 +1,13 @@
 import AllItem from "@/components/menu/AllItem";
-// import { CreateMenuComp } from "@/components/menu/CreateItems"; // Unused but kept if needed
 import React from "react";
-import { TableProvider } from "@/lib/context/TableContext";
-// Define the shape of your params
 interface PageProps {
   searchParams: Promise<{ table: string }>;
 }
 
 async function Page({ searchParams }: PageProps) {
   // Await the params to get the table ID
- const tableToken = (await searchParams).table
+ const qrToken = (await searchParams).table
   return (
-        <TableProvider tableToken={tableToken}>
 
     <div className="container mx-auto py-10 space-y-10">
       <div className="flex flex-col items-center gap-4">
@@ -22,7 +18,6 @@ async function Page({ searchParams }: PageProps) {
         </div>
       </div>
     </div>
-    </TableProvider>
   );
 }
 
