@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Menu, ShoppingCartIcon } from "lucide-react"
+import { ListOrdered, Menu, MenuSquare, ShoppingCartIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,23 +16,33 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { useTable } from "@/context/tableContext"
 
- function Navbar() {
+function Navbar() {
+  const { tableId } = useTable()
+  
   return (
-    <nav className="max-w-7xl  mx-auto justify-center  border-b bg-background">
-      <div className="container  flex  h-16 items-center justify-between px-4">
+    <nav className="max-w-7xl mx-auto justify-center border-b bg-background">
+      <div className="container flex h-16 items-center justify-between px-4">
 
         {/* Logo */}
         <Link href="/" className="text-xl font-bold">
-Khana khazan        </Link>
+          Khana Khazan
+        </Link>
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6">
-          <Link href="/menu" className="text-sm font-medium hover:text-primary">
-           Menu
+          <Link href={`./menu?table=${tableId}`} className="text-sm font-medium hover:text-primary">
+                     <div className="flex text-center font-sans">Menu<MenuSquare /> </div>
           </Link>
-            <Link href="/Cart" className="text-sm font-medium hover:text-primary">
-           <ShoppingCartIcon/>
+
+          <Link href={`./order?table=${tableId}`} className="text-sm font-medium hover:text-primary">
+             <div className="flex text-center font-sans">Order      <ListOrdered size={24} />
+</div>
+          </Link>
+
+          <Link href={`./Cart?table=${tableId}`} className="text-sm font-medium hover:text-primary">
+            <div className="flex text-center gap-2 font-sans">Cart <ShoppingCartIcon /></div>
           </Link>
 
           {/* User Dropdown */}
@@ -43,15 +53,9 @@ Khana khazan        </Link>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>
-                Profile
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                Logout
-              </DropdownMenuItem>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -67,9 +71,11 @@ Khana khazan        </Link>
 
             <SheetContent side="left" className="w-64">
               <div className="flex flex-col gap-4 mt-6">
+                <Link href="/menu">Menu</Link>
+                <Link href="/order">Order</Link>
+                <Link href="/Cart">Cart</Link>
                 <Link href="/admin">Dashboard</Link>
                 <Link href="/pricing">Pricing</Link>
-                <Link href="/Cart">Cart</Link>
               </div>
             </SheetContent>
           </Sheet>
@@ -79,4 +85,5 @@ Khana khazan        </Link>
     </nav>
   )
 }
+
 export default Navbar
