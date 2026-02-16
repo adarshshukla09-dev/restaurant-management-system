@@ -43,6 +43,7 @@ import {
 import { Button } from "../ui/button";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
+import { useTable } from "@/context/tableContext";
 type Data = {
   id: string;
   name: string;
@@ -58,7 +59,7 @@ type Data = {
 function MenuCard({ item }: { item: Data }) {
   const router = useRouter(); // 🔑 App Router refresh
   const { addItem } = useCart(); // ✅ MOVE IT HERE
-
+ 
   const formattedPrice = (item.price / 100).toFixed(2);
   const [isEditOpen, setIsEditOpen] = useState(false);
 

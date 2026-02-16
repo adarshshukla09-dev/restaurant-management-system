@@ -5,6 +5,8 @@ import Navbar from "@/components/util/Navbar";
 import { CartProvider } from "@/context/CartContext";
 import { Toast } from "radix-ui";
 import { Toaster } from "sonner";
+import { TableProvider } from "@/context/tableContext";
+// import { TableProvider } from "@/context/tableContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,13 +33,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+<TableProvider>
 <CartProvider>
-
+  
         <Navbar/>
         {children}
           <Toaster position="top-right" richColors />
 
 </CartProvider>
+</TableProvider>
       </body>
     </html>
   );

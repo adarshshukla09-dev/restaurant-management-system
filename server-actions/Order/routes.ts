@@ -17,7 +17,7 @@ export const getOrCreateActiveOrder = async (
     const table = await db
       .select()
       .from(restaurantTables)
-      .where(eq(restaurantTables.qrToken, qrToken))
+      .where(eq(restaurantTables.id, qrToken))
       .limit(1);
 
     if (!table.length) {
@@ -85,7 +85,7 @@ export const buyFromCart = async (
     // MUST await
     const orderId = await getOrCreateActiveOrder(qrToken, waiterId);
 
-    await db.insert(orderItems).values(
+  const order =  await db.insert(orderItems).values(
       items.map((i) => ({
         orderId,
         menuId: i.menuId,
@@ -94,8 +94,8 @@ export const buyFromCart = async (
         quantity: i.quantity,
       }))
     );
-
-    revalidatePath(`/table/${qrToken}`);
+console.log(order)
+    revalidatePath(`/menu/${qrToken}`);
 
     return { success: true };
   } catch (error) {
@@ -114,7 +114,7 @@ export const allOrders = async (qrToken: string) => {
     const table = await db
       .select()
       .from(restaurantTables)
-      .where(eq(restaurantTables.qrToken, qrToken))
+      .where(eq(restaurantTables.id, qrToken))
       .limit(1);
 
     if (!table.length) {

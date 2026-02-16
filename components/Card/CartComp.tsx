@@ -4,20 +4,25 @@ import { buyFromCart } from "@/server-actions/Order/routes"
 import CartCard from "./CartCard";
 import { Button } from "../ui/button";
 import { CreditCard, ReceiptText, Truck } from "lucide-react";
+import { useTable } from "@/context/tableContext";
+import { toast } from "sonner";
 
-function CartComp({ qrToken }: { qrToken: string }) {
+function CartComp() {
     const { cart, removeItem, clearCart, total } = useCart();
+     const {tableId,setTableId}=useTable()
+
       const handleOrder = async () => {
     if (cart.length === 0) return;
-
+const qrToken = tableId ? tableId : ""
     await buyFromCart(qrToken, cart);
-
+toast.success("order placed sucessfully")
     clearCart();
   };
   return (
     <div className="max-w-7xl mx-auto p-4 lg:p-8">
       <h1 className="text-3xl font-extrabold text-slate-800 mb-8">
-        Your Order
+        Your Order 
+       <p> {tableId}</p>
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -61,7 +66,7 @@ function CartComp({ qrToken }: { qrToken: string }) {
             </div>
           </div>
 
-          <Button className="w-full mt-8 bg-orange-600 hover:bg-orange-700 h-14 text-lg font-bold rounded-xl shadow-lg shadow-orange-100 flex gap-2">
+          <Button onClick={handleOrder} className="w-full mt-8 bg-orange-600 hover:bg-orange-700 h-14 text-lg font-bold rounded-xl shadow-lg shadow-orange-100 flex gap-2">
             <CreditCard size={20} />
             Checkout Now
           </Button>
