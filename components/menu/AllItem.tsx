@@ -3,7 +3,11 @@ import MenuCard from "./MenuCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UtensilsCrossed, Leaf, Flame, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
+=======
+import { useTable } from "@/context/tableContext";
+>>>>>>> d165aa8531781bd49984b5655bdcb37391b68f67
 
 type MenuItem = {
   id: string;
@@ -16,6 +20,7 @@ type MenuItem = {
   category: string;
   createdAt: Date | null;
 };
+<<<<<<< HEAD
 
 function AllItem({ data,table }: { data: MenuItem[] ,table:string }) {
  const [tableId, setTableId] = useState<string | null>(null)
@@ -24,6 +29,14 @@ function AllItem({ data,table }: { data: MenuItem[] ,table:string }) {
     const storedTableId = localStorage.getItem("tableId")
     setTableId(storedTableId)
   }, [])
+=======
+
+function AllItem({ data,table }: { data: MenuItem[] ,table:string }) {
+ const {tableId,setTableId}=useTable()
+     if(table != undefined){
+      setTableId(table)
+     }
+>>>>>>> d165aa8531781bd49984b5655bdcb37391b68f67
   const vegItems = data.filter((item) => item.foodType === "VEG");
   const nonVegItems = data.filter((item) => item.foodType === "NONVEG");
 
