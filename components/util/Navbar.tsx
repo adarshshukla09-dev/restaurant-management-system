@@ -1,11 +1,7 @@
 "use client"
 
 import Link from "next/link"
-<<<<<<< HEAD
 import { Flame, ListOrdered, Menu, MenuSquare, ShoppingCartIcon } from "lucide-react"
-=======
-import { ListOrdered, Menu, MenuSquare, ShoppingCartIcon } from "lucide-react"
->>>>>>> d165aa8531781bd49984b5655bdcb37391b68f67
 
 import { Button } from "@/components/ui/button"
 import {
@@ -21,7 +17,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useTable } from "@/context/tableContext"
-<<<<<<< HEAD
 import { useEffect, useState } from "react"
 
 function Navbar() {
@@ -33,12 +28,6 @@ function Navbar() {
     setTableId(storedTableId)
   }, [])
 
-=======
-
-function Navbar() {
-  const { tableId } = useTable()
-  
->>>>>>> d165aa8531781bd49984b5655bdcb37391b68f67
   return (
     <nav className="max-w-7xl mx-auto justify-center border-b bg-background">
       <div className="container flex h-16 items-center justify-between px-4">
@@ -51,7 +40,6 @@ function Navbar() {
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6">
           <Link href={`./menu?table=${tableId}`} className="text-sm font-medium hover:text-primary">
-<<<<<<< HEAD
                      <div className="flex text-center font-sans">Menu<MenuSquare className="hover:text-red-400" /> </div>
           </Link>
 
@@ -65,18 +53,6 @@ function Navbar() {
            <Link href={`./kitchen`} className="text-sm font-medium hover:text-primary">
                      <div className="flex text-center  font-sans">kitchen<Flame className="hover:text-orange-500"/>
                      </div>
-=======
-                     <div className="flex text-center font-sans">Menu<MenuSquare /> </div>
-          </Link>
-
-          <Link href={`./order?table=${tableId}`} className="text-sm font-medium hover:text-primary">
-             <div className="flex text-center font-sans">Order      <ListOrdered size={24} />
-</div>
-          </Link>
-
-          <Link href={`./Cart?table=${tableId}`} className="text-sm font-medium hover:text-primary">
-            <div className="flex text-center gap-2 font-sans">Cart <ShoppingCartIcon /></div>
->>>>>>> d165aa8531781bd49984b5655bdcb37391b68f67
           </Link>
 
           {/* User Dropdown */}
