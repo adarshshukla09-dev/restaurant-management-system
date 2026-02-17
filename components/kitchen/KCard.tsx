@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -19,7 +20,8 @@ interface OrderProps {
 
 
 function KCard({ orders }: { orders: OrderProps }) {
-  const handleStatus = async (status: Status) => {
+ 
+  async function handleStatus(status: Status){
     await updateStatus({
       id: orders.id,
       status,
