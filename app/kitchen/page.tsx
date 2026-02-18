@@ -7,7 +7,7 @@ async function Page() {
 
   return (
    <div className="min-h-screen w-full mb-5 px-8 flex justify-center">
-  <div className="w-full mb-5 max-w-7xl">
+  <div className="w-full mb-5 mx-auto max-w-7xl">
       <AllCard all={all} />
     </div>
     </div>

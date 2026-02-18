@@ -68,9 +68,7 @@ export const getOrCreateActiveOrder = async (
 };
 
 
-/**
- * Add items to cart / order
- */
+
 export const buyFromCart = async (
   qrToken: string,
   items: {
@@ -105,9 +103,6 @@ console.log(order)
 };
 
 
-/**
- * Get all items for active order
- */
 export const allOrders = async (qrToken: string) => {
   try {
     // 1️⃣ Find table

@@ -4,15 +4,9 @@ import { restaurantTables } from "@/db/schema";
 import { tableInput } from "@/lib/vaildator/table";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+
 export const createTable = async (data:tableInput) => {
   try {
-//   tableNumber: text("table_number").unique().notNull(),
-// qrToken: uuid("qr_token")
-//     .defaultRandom()
-//     .notNull()
-//     .unique(),
-//   status: tableStatus("status").default("FREE").notNull(),
-
 const newTable = await db.insert(restaurantTables).values(data).returning()
 
 return { success:true , data:newTable}
@@ -44,11 +38,3 @@ export const deleteTable = async ( id:string) => {
     );
   }
 };
-// export const createTable = async () => {
-//   try {
-//   } catch (error) {
-//     console.log(
-//       error instanceof Error ? error.message : "something went wrong",
-//     );
-//   }
-// };

@@ -20,7 +20,6 @@ import { useTable } from "@/context/tableContext"
 import { useEffect, useState } from "react"
 
 function Navbar() {
-  // const { tableId } = useTable()
    const [tableId, setTableId] = useState<string | null>(null)
 
   useEffect(() => {
@@ -39,15 +38,15 @@ function Navbar() {
 
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-6">
-          <Link href={`./menu?table=${tableId}`} className="text-sm font-medium hover:text-primary">
+          <Link href={tableId ? `./menu?table=${tableId}` : "./menu"} className="text-sm font-medium hover:text-primary">
                      <div className="flex text-center font-sans">Menu<MenuSquare className="hover:text-red-400" /> </div>
           </Link>
 
-          <Link href={`./order?table=${tableId}`} className="text-sm font-medium hover:text-primary">
+          <Link href={tableId ? `./order?table=${tableId}` : "./order"} className="text-sm font-medium hover:text-primary">
              <div className="flex text-center font-sans">Order      <ListOrdered size={24} className="hover:text-purple-500" /></div>
           </Link>
 
-          <Link href={`./Cart?table=${tableId}`} className="text-sm font-medium hover:text-primary">
+          <Link href={tableId ? `./Cart?table=${tableId}` : "./Cart"} className="text-sm font-medium hover:text-primary">
             <div className="flex text-center gap-2 font-sans">Cart <ShoppingCartIcon className="hover:text-green-500" /></div>
           </Link>
            <Link href={`./kitchen`} className="text-sm font-medium hover:text-primary">

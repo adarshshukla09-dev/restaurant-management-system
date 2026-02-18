@@ -1,13 +1,17 @@
 import React from 'react'
 
 function OCard({ order }: any) {
-  const statusColor =
-    order.status === "PENDING"
-      ? "bg-yellow-100 text-yellow-600"
-      : order.status === "COMPLETED"
-      ? "bg-green-100 text-green-600"
-      : "bg-red-100 text-red-600"
-
+  const statusColor =(status:string)=>{
+     switch (status) {
+      case "PENDING":
+        return "bg-red-400";
+      case "PREPARING":
+        return "bg-yellow-400";
+      case "READY":
+        return "bg-orange-500";
+      case "SERVED":
+        return "bg-green-400 ";
+    }}
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100 hover:shadow-xl transition-all duration-300">
       
@@ -16,7 +20,7 @@ function OCard({ order }: any) {
           {order.itemName}
         </h2>
 
-        <span className={`px-3 py-1 text-sm rounded-full font-semibold ${statusColor}`}>
+        <span className={`px-3 py-1 text-sm rounded-full font-semibold ${statusColor(order.status)}`}>
           {order.status}
         </span>
       </div>

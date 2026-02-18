@@ -19,12 +19,12 @@ type MenuItem = {
 };
 
 function AllItem({ data,table }: { data: MenuItem[] ,table:string }) {
- const [tableId, setTableId] = useState<string | null>(null)
+ const [tableId, setTableId] = useState("")
 
   useEffect(() => {
-    const storedTableId = localStorage.getItem("tableId")
-    setTableId(storedTableId)
-  }, [])
+    const storedTableId = localStorage.setItem("tableId",table)
+console.log(storedTableId) 
+setTableId(table) }, [])
   const vegItems = data.filter((item) => item.foodType === "VEG");
   const nonVegItems = data.filter((item) => item.foodType === "NONVEG");
 

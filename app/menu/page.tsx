@@ -1,3 +1,4 @@
+
 import AllItem from "@/components/menu/AllItem";
 import { readAll } from "@/server-actions/admin/menu/route";
 
@@ -22,6 +23,7 @@ async function Page({ searchParams }: PageProps) {
   if (table == undefined) {
     return;
   }
+    
   const menu = await readAll();
   const data: Data[] = menu?.data || [];
   console.log(table);

@@ -1,8 +1,21 @@
-"use client"
+"use client";
 import React from "react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
-
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Move this inside the component or a constants file
 const STATUS_OPTIONS = ["PENDING", "PREPARING", "READY", "SERVED"] as const;
@@ -18,15 +31,25 @@ interface OrderProps {
   status: string;
 }
 
-
 function KCard({ orders }: { orders: OrderProps }) {
- 
-  async function handleStatus(status: Status){
+  const handleColor = (status: String) => {
+    switch (status) {
+      case "PENDING":
+        return "bg-red-400";
+      case "PREPARING":
+        return "bg-yellow-400";
+      case "READY":
+        return "bg-orange-500";
+      case "SERVED":
+        return "bg-green-400 ";
+    }
+  };
+  async function handleStatus(status: Status) {
     await updateStatus({
       id: orders.id,
       status,
     });
-  };
+  }
   return (
     <Card className="max-w-md shadow-md">
       <CardHeader>
@@ -41,23 +64,31 @@ function KCard({ orders }: { orders: OrderProps }) {
             <p className="text-xs uppercase tracking-wider text-zinc-500 font-semibold">
               Quantity
             </p>
-            <span className="text-zinc-700 font-medium">{orders.quantity} Units</span>
+            <span className="text-zinc-700 font-medium">
+              {orders.quantity} Units
+            </span>
           </div>
 
           <div>
             <p className="text-xs uppercase tracking-wider text-zinc-500 font-semibold mb-1">
               Current Status
             </p>
-            <span className="inline-flex items-center bg-orange-100 px-3 py-1 rounded-full text-sm font-medium text-orange-700">
+            <span
+              className={`inline-flex items-center  px-3 py-1 rounded-full text-sm font-medium ${handleColor(orders.status)}`}
+            >
               {orders.status}
             </span>
           </div>
         </div>
 
         <div className="space-y-2">
-          <p className="text-xs font-semibold text-zinc-500 uppercase">Update Status</p>
-          <Select            onValueChange={(value) => handleStatus(value as Status)}
- defaultValue={orders.status}>
+          <p className="text-xs font-semibold text-zinc-500 uppercase">
+            Update Status
+          </p>
+          <Select
+            onValueChange={(value) => handleStatus(value as Status)}
+            defaultValue={orders.status}
+          >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Update status" />
             </SelectTrigger>
