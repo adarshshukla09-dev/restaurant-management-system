@@ -1,9 +1,11 @@
 "use server";
 
 import { db } from "@/db";
-import { orderItems, orders, restaurantTables } from "@/db/schema";
+import { orderItems, orders, restaurantTables } from "@/db/schema/schema";
 import { eq, and, ne } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { NextResponse } from "next/server";
+import { success } from "zod";
 
 /**
  * Get or create active order using qrToken
@@ -146,5 +148,35 @@ export const allOrders = async (qrToken: string) => {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+export const CancelOrder = async (orderId: string) => {
+  try {
+    const order = await db
+      .select()
+      .from(orderItems)
+      .where(eq(orderItems.id, orderId));
+
+    if (!order.length) {
+      return { message: "Order not found", success: false };
+    }
+
+    if (order[0].status === "PENDING") {
+      await db
+        .delete(orderItems)
+        .where(eq(orderItems.id, orderId));
+revalidatePath("/order")
+
+      return { message: "Deleted successfully", success: true };
+    }
+    return {
+      message: `Can't delete because the order is ${order[0].status}`,
+      success: false,
+    };
+
+  } catch (error) {
+    console.error(error);
+    return { message: "Something went wrong", success: false };
   }
 };

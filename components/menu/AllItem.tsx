@@ -18,13 +18,14 @@ type MenuItem = {
   createdAt: Date | null;
 };
 
-function AllItem({ data,table }: { data: MenuItem[] ,table:string }) {
- const [tableId, setTableId] = useState("")
+function AllItem({ data, table }: { data: MenuItem[]; table: string }) {
+  const [tableId, setTableId] = useState("");
 
   useEffect(() => {
-    const storedTableId = localStorage.setItem("tableId",table)
-console.log(storedTableId) 
-setTableId(table) }, [])
+    const storedTableId = localStorage.setItem("tableId", table);
+    console.log(storedTableId);
+    setTableId(table);
+  }, []);
   const vegItems = data.filter((item) => item.foodType === "VEG");
   const nonVegItems = data.filter((item) => item.foodType === "NONVEG");
 
@@ -50,16 +51,16 @@ setTableId(table) }, [])
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="max-w-7xl w-full mx-auto px-6 py-12">
       <div className="flex flex-col space-y-8 mb-12">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-1">
-            <h1 className="text-5xl font-black text-slate-900 tracking-tight italic">
-              THE MENU 
-              <p>{tableId}</p>
+            <h1 className="text-5xl  font-black text-slate-900 tracking-tight italic">
+              THE MENU
+            
             </h1>
             <p className="text-slate-500 font-medium">
-              Management Dashboard • {data.length} Total Items
+           {data.length} Total Items
             </p>
           </div>
 

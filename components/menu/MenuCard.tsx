@@ -99,13 +99,13 @@ function MenuCard({ item }: { item: Data }) {
 
 
   return (
-    <Card className="group overflow-hidden rounded-2xl border-none shadow-sm hover:shadow-xl transition-all duration-300 bg-white">
+    <Card className="group overflow-hidden rounded-2xl border-none shadow-sm hover:shadow-xl transition-all duration-300 bg-white ">
       {/* Image Section */}
       <div className="relative h-52 w-full">
         <img
           src={item.image || "/placeholder-food.jpg"}
           alt={item.name}
-          className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="h-full w-full object-cover "
         />
         <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 

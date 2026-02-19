@@ -1,6 +1,6 @@
 "use client";
 import { useCart } from "@/context/CartContext";
-import { buyFromCart } from "@/server-actions/Order/routes"
+import { buyFromCart } from "@/server-actions/Order/routes";
 import CartCard from "./CartCard";
 import { Button } from "../ui/button";
 import { CreditCard, ReceiptText, Truck } from "lucide-react";
@@ -8,33 +8,33 @@ import { useTable } from "@/context/tableContext";
 import { toast } from "sonner";
 
 function CartComp() {
-    const { cart, removeItem, clearCart, total } = useCart();
-     const {tableId,setTableId}=useTable()
-
-      const handleOrder = async () => {
+  const { cart, removeItem, clearCart, total } = useCart();
+  // const { tableId, setTableId } = useTable();
+ const tableId = localStorage.getItem("tableId");
+  const handleOrder = async () => {
     if (cart.length === 0) return;
-const qrToken = tableId ? tableId : ""
-    await buyFromCart(qrToken, cart);
-toast.success("order placed sucessfully")
+   
+    if (tableId) {await buyFromCart(tableId, cart);
+    toast.success("order placed sucessfully");}
     clearCart();
   };
   return (
     <div className="max-w-7xl mx-auto p-4 lg:p-8">
       <h1 className="text-3xl font-extrabold text-slate-800 mb-8">
-        Your Order 
-       <p> {tableId}</p>
+        Your Order
+        <p> {tableId}</p>
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         {/* LEFT COLUMN: Scrollable List of Items */}
         <div className="lg:col-span-2 space-y-4 max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar">
-          { cart.length != 0 ? cart.map((item) => (
-           <CartCard key={item.menuId} item={item}/>)
+          {cart.length != 0 ? (
+            cart.map((item) => <CartCard key={item.menuId} item={item} />)
           ) : (
             <div className="h-80 w-full flex items-center justify-center  border-2 border-dotted">
               No order yet
             </div>
-          )} 
+          )}
           {/* Add as many as you want; the container handles the scroll */}
         </div>
 
@@ -50,7 +50,7 @@ toast.success("order placed sucessfully")
               <span>Subtotal</span>
               <span className="font-semibold text-slate-900">{total}</span>
             </div>
-           
+
             <div className="flex justify-between items-center text-emerald-600 bg-emerald-50 p-2 rounded-lg text-sm">
               <span className="flex items-center gap-1">
                 <Truck size={14} /> Delivery
@@ -66,7 +66,10 @@ toast.success("order placed sucessfully")
             </div>
           </div>
 
-          <Button onClick={handleOrder} className="w-full mt-8 bg-orange-600 hover:bg-orange-700 h-14 text-lg font-bold rounded-xl shadow-lg shadow-orange-100 flex gap-2">
+          <Button
+            onClick={handleOrder}
+            className="w-full mt-8 bg-orange-600 hover:bg-orange-700 h-14 text-lg font-bold rounded-xl shadow-lg shadow-orange-100 flex gap-2"
+          >
             <CreditCard size={20} />
             Checkout Now
           </Button>

@@ -3,12 +3,15 @@ import {
   pgTable,
   uuid,
   text,
-  timestamp,
+  timestamp,index,
   integer,
   boolean,
 } from "drizzle-orm/pg-core";
-import { users } from "./auth-schema";
-import { number } from "zod";
+import { relations } from "drizzle-orm";
+import { user } from "./authschema";
+
+
+
 
 export const tableStatus = pgEnum("table_status", [
   "FREE",
@@ -53,7 +56,7 @@ export const orders = pgTable("orders", {
   tableId: uuid("table_id")
     .notNull()
     .references(() => restaurantTables.id, { onDelete: "cascade" }),
-  waiterId: text("waiter_id").references(() => users.id),
+  waiterId: text("waiter_id").references(() => user.id),
   status: orderStatus("status").default("PENDING").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });

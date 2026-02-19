@@ -1,6 +1,6 @@
 "use server"
 import { db } from "@/db";
-import { restaurantTables } from "@/db/schema";
+import { restaurantTables } from "@/db/schema/schema";
 import { tableInput } from "@/lib/vaildator/table";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

@@ -1,7 +1,15 @@
-import Image from "next/image";
+import { auth } from "@/lib/utils/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-   <div></div>
-  );
+export default async function HomePage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/register");
+  }
+
+  return <h1>Welcome {session.user.name}</h1>;
 }

@@ -1,6 +1,6 @@
 "use server"
 import { db } from "@/db";
-import { orderItems, orders } from "@/db/schema";
+import { orderItems, orders } from "@/db/schema/schema";
 import { eq } from "drizzle-orm";
 import { OrderItemInput } from "@/lib/vaildator/order";
 import { revalidatePath } from "next/cache";

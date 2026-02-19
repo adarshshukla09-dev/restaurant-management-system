@@ -1,6 +1,11 @@
-import React from 'react'
+import { CancelOrder } from '@/server-actions/Order/routes';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
+
+import { toast } from 'sonner';
 
 function OCard({ order }: any) {
+  const router = useRouter()
   const statusColor =(status:string)=>{
      switch (status) {
       case "PENDING":
@@ -12,6 +17,14 @@ function OCard({ order }: any) {
       case "SERVED":
         return "bg-green-400 ";
     }}
+    const handleCancel = async( )=>{
+const res = await CancelOrder(order.id);
+  if (res.success) {
+    toast.success(res.message);
+    router.refresh()
+  } else {
+    toast.error(res.message);
+  }    }
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-100 hover:shadow-xl transition-all duration-300">
       
@@ -29,8 +42,10 @@ function OCard({ order }: any) {
         <p><span className="font-semibold">Price:</span> {order.itemPrice}</p>
         <p><span className="font-semibold">Quantity:</span> {order.quantity}</p>
         <p><span className="font-semibold">Total:</span> {order.itemPrice * order.quantity} </p>
-      </div>
-
+    
+      <div className='float-end mx-auto'>
+<Button onClick={handleCancel} > Cancel Order</Button></div>
+  </div>
       <div className="mt-4 text-xs text-slate-400 break-all">
         ID: {order.id}
       </div>

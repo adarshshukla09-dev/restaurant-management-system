@@ -28,8 +28,8 @@ function Navbar() {
   }, [])
 
   return (
-    <nav className="max-w-7xl mx-auto justify-center border-b bg-background">
-      <div className="container flex h-16 items-center justify-between px-4">
+    <nav className="max-w-7xl mx-auto my-3 rounded-2xl  justify-center border-b bg-background">
+      <div className="container  flex h-16 items-center justify-between px-4">
 
         {/* Logo */}
         <Link href="/" className="text-xl font-bold">
