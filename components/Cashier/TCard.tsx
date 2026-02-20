@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AllOrder from "./AllOrder";
-import { Button } from "../ui/button";
+import { Button } from "@base-ui/react";
 
 type Data = {
   id: string;
@@ -34,6 +34,7 @@ function TCard({ data }: { data: Data }) {
     RESERVED: "bg-yellow-500",
   };
 
+  
   return (
     <Card className="cursor-pointer hover:shadow-lg transition">
       <CardHeader>
@@ -63,7 +64,11 @@ function TCard({ data }: { data: Data }) {
               </DialogTitle>
             </DialogHeader>
 
-            <AllOrder tableId={data.id} />
+            <div className="flex flex-col gap-4">
+              <AllOrder tableId={data.id} />
+
+             
+            </div>
           </DialogContent>
         </Dialog>
       </CardFooter>

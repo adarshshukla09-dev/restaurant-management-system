@@ -3,9 +3,7 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
- body{
-  background-color: antiquewhite;
- }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
