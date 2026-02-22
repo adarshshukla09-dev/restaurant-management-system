@@ -5,19 +5,26 @@ import { tableInput } from "@/lib/vaildator/table";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export const createTable = async (data:tableInput) => {
+export const createTable = async (
+  data: tableInput,
+) => {
   try {
-const newTable = await db.insert(restaurantTables).values(data).returning()
+    const newTable = await db
+      .insert(restaurantTables)
+      .values({
+        ...data,
+      })
+      .returning();
 
-return { success:true , data:newTable}
-
+    return { success: true, data: newTable };
   } catch (error) {
     console.log(
-      error instanceof Error ? error.message : "something went wrong",
+      error instanceof Error ? error.message : "something went wrong"
     );
   }
 };
-export const readAllTable = async () => {
+export const readAllTable = async ( 
+) => {
   try {
     const AllTable =await db.select().from(restaurantTables)
     return{ sucess:true,data:AllTable}

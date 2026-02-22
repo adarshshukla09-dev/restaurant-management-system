@@ -7,16 +7,17 @@ import {
   integer,
   boolean,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
-import { user } from "./authschema";
-
-
-
+import { user, userRoles } from "./authschema";
 
 export const tableStatus = pgEnum("table_status", [
   "FREE",
   "OCCUPIED",
   "RESERVED",
+]);
+export const staffStatus = pgEnum("staff_status", [
+  "APPROVED",
+  "PENDING",
+  "REJECTED",
 ]);
 
 export const orderStatus = pgEnum("order_status", [
@@ -33,6 +34,7 @@ export const mealTime = pgEnum("meal_time", ["BREAKFAST", "LUNCH", "DINNER"]);
 
 export const restaurantTables = pgTable("restaurant_tables", {
   id: uuid("id").primaryKey().defaultRandom(),
+
   tableNumber: integer("table_number").unique().notNull(),
   qrToken: uuid("qr_token").defaultRandom().notNull().unique(),
   status: tableStatus("status").default("FREE").notNull(),
@@ -41,6 +43,7 @@ export const restaurantTables = pgTable("restaurant_tables", {
 
 export const menu = pgTable("menu", {
   id: uuid("id").primaryKey().defaultRandom(),
+  
   name: text("name").notNull(),
   description: text("description"),
   price: integer("price").notNull(), // live price
@@ -53,6 +56,7 @@ export const menu = pgTable("menu", {
 
 export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
+ 
   tableId: uuid("table_id")
     .notNull()
     .references(() => restaurantTables.id, { onDelete: "cascade" }),
@@ -93,4 +97,16 @@ export const payments = pgTable("payments", {
   status: text("status").notNull(), // SUCCESS | FAILED
 
   paidAt: timestamp("paid_at").defaultNow(),
+});
+
+
+
+export const restaurantMembers = pgTable("restaurant_members", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  role: userRoles("role").default("WAITER").notNull(),
+  status: staffStatus("status").default("PENDING").notNull(),
+  joinedAt: timestamp("joined_at").defaultNow(),
 });

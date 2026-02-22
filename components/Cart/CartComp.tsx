@@ -6,16 +6,24 @@ import { Button } from "../ui/button";
 import { CreditCard, ReceiptText, Truck } from "lucide-react";
 import { useTable } from "@/context/tableContext";
 import { toast } from "sonner";
+import { useEffect, useState } from "react";
 
 function CartComp() {
   const { cart, removeItem, clearCart, total } = useCart();
-  // const { tableId, setTableId } = useTable();
- const tableId = localStorage.getItem("tableId");
+  const [ tableId, setTableId ] = useState("");
+  useEffect(()=>{
+
+    const tId = localStorage.getItem("tableId");
+    if(tId)  setTableId(tId);
+    console.log(tableId);
+  },[])
   const handleOrder = async () => {
     if (cart.length === 0) return;
-   
-    if (tableId) {await buyFromCart(tableId, cart);
-    toast.success("order placed sucessfully");}
+
+    if (tableId) {
+      await buyFromCart(tableId, cart);
+      toast.success("order placed sucessfully");
+    }
     clearCart();
   };
   return (

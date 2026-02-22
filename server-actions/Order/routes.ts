@@ -19,9 +19,9 @@ export const getOrCreateActiveOrder = async (
     const table = await db
       .select()
       .from(restaurantTables)
-      .where(eq(restaurantTables.id, qrToken))
+      .where(eq(restaurantTables.qrToken, qrToken))
       .limit(1);
-
+console.log(table)
     if (!table.length) {
       throw new Error("Table not found");
     }

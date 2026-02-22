@@ -57,7 +57,7 @@ const totalQuantity = data.reduce(
     });
 
     const session = await res.json();
-
+console.log(session)
     if (!session.url) {
       throw new Error("No checkout URL returned");
     }

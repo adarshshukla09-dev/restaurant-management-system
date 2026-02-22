@@ -1,61 +1,62 @@
+// app/admin/tables/page.tsx
 import QRCode from "qrcode";
 import AllTable from "@/components/Tables/AllTable";
 import CreateTableForm from "@/components/Tables/CreateTableForm";
 import { readAllTable } from "@/server-actions/admin/tables/route";
-import { Separator } from "@/components/ui/separator";
+import { Sparkles } from "lucide-react";
 
 export default async function Page() {
   const res = await readAllTable();
   const data = res?.data ?? [];
 
   const tablesWithQR = await Promise.all(
-    data.map(async (table) => {
-      // PRO TIP: In production, replace localhost with your actual domain environment variable
+    data.map(async (table: any) => {
       const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
       const url = `${baseUrl}/menu?table=${table.qrToken}`;
-      const qrImage = await QRCode.toDataURL(url);
+      const qrImage = await QRCode.toDataURL(url, {
+        margin: 2,
+        scale: 10,
+        color: {
+          dark: "#0f172a", // slate-900
+          light: "#ffffff",
+        },
+      });
 
-      return {
-        ...table,
-        qrImage,
-      };
+      return { ...table, qrImage };
     })
   );
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20">
-      <div className="max-w-6xl mx-auto p-6">
+    <div className="min-h-screen bg-[#F8FAFC] pb-20">
+      <div className="max-w-7xl mx-auto px-8 py-12">
         {/* Header Section */}
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
-              Manage Tables
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-16">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-orange-500 font-bold text-xs uppercase tracking-[0.2em]">
+               <Sparkles size={14} /> System Infrastructure
+            </div>
+            <h1 className="text-5xl font-black tracking-tighter text-slate-900 italic">
+              TABLE <span className="text-orange-500">MANAGEMENT</span>
             </h1>
-            <p className="text-slate-500 mt-1">
-              Create, edit, and download QR codes for your restaurant tables.
+            <p className="text-slate-400 font-medium">
+              Oversee your physical dining space and QR connectivity.
             </p>
           </div>
           <CreateTableForm />
         </header>
 
-        <Separator className="mb-10" />
-
         {/* Tables Grid */}
         {tablesWithQR.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {tablesWithQR.map((item) => (
               <AllTable key={item.id} table={item} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center min-h-75 border-2 border-dashed rounded-xl bg-white p-12 text-center">
-            <div className="bg-slate-100 p-4 rounded-full mb-4">
-              <span className="text-2xl">🪑</span>
-            </div>
-            <h3 className="text-lg font-medium text-slate-900">No tables found</h3>
-            <p className="text-slate-500 max-w-sm mx-auto mt-2">
-              It looks like you haven't added any tables yet. Use the "Add New Table" button to get started.
-            </p>
+          <div className="flex flex-col items-center justify-center py-40 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
+             <div className="h-20 w-20 bg-slate-50 rounded-full flex items-center justify-center text-3xl mb-6">🪑</div>
+             <h3 className="text-2xl font-black text-slate-900 tracking-tight">Zero Tables Registered</h3>
+             <p className="text-slate-400 mt-2 font-medium">Your restaurant floor is currently empty.</p>
           </div>
         )}
       </div>

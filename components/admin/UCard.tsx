@@ -1,14 +1,33 @@
-import React from "react";
-import { Userdata } from "./AllU";
+"use client";
 
-function UCard({ user }: { user: Userdata }) {
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { createMember } from "@/server-actions/admin/roles/routes";
+import { useRouter } from "next/navigation";
+
+export default function UCard({ user }: { user: any }) {
+    const router = useRouter()
+  const handleAdd = async () => {
+    const res = await createMember({ userId: user.id });
+
+    if (res.success) {
+      toast.success(res.message);
+      router.refresh()
+    } else {
+      toast.error(res.message);
+    }
+  };
+
   return (
-    <div className="w-64  bg-gray-100 p-4 rounded-xl shadow">
-      <h2 className="text-lg font-semibold">{user.name}</h2>
-      <p className="text-sm text-gray-600">{user.email}</p>
-      <p className="text-sm mt-2 font-medium">Role: {user.role}</p>
+    <div className="border p-6 rounded-xl flex justify-between">
+      <div>
+        <h2>{user.name}</h2>
+        <p className="text-sm text-gray-500">{user.email}</p>
+      </div>
+
+      <Button onClick={handleAdd}>
+        Add to Restaurant
+      </Button>
     </div>
   );
 }
-
-export default UCard;
