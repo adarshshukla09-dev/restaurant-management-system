@@ -2,7 +2,11 @@
 
 import { db } from "@/db";
 import { restaurantMembers, user } from "@/db/schema";
+import { auth } from "@/lib/utils/auth";
 import { eq } from "drizzle-orm";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { success } from "zod";
 
 export const getRestaurantMembers = async () => {
   try {
@@ -35,11 +39,7 @@ export const getAllUsers = async () => {
     return { success: false };
   }
 };
-export const createMember = async ({
-  userId,
-}: {
-  userId: string;
-}) => {
+export const createMember = async ({ userId }: { userId: string }) => {
   try {
     // 1️⃣ Check if already member
     const existing = await db
@@ -81,10 +81,25 @@ export const changeMemberRole = async ({
   newRole: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN";
 }) => {
   try {
-    await db
-      .update(restaurantMembers)
-      .set({ role: newRole })
-      .where(eq(restaurantMembers.id, memberId));
+    await db.transaction(async (tx) => {
+      const member = await tx.query.restaurantMembers.findFirst({
+        where: eq(restaurantMembers.id, memberId),
+      });
+
+      if (!member) {
+        throw new Error("member not found");
+      }
+
+      await tx
+        .update(restaurantMembers)
+        .set({ role: newRole })
+        .where(eq(restaurantMembers.id, memberId));
+
+      await tx
+        .update(user)
+        .set({ role: newRole })
+        .where(eq(user.id, member.userId));
+    });
 
     return { success: true };
   } catch (error) {

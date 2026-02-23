@@ -1,30 +1,14 @@
-import AddMemberDialog from "@/components/admin/AddMemberDialog";
-import MembersList from "@/components/admin/MembersList";
-import { getRestaurantMembers } from "@/server-actions/admin/roles/routes";
-
-type Member = {
-  memberId: string;
-  role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN";
-  status: "APPROVED" | "PENDING" | "REJECTED";
-  userId: string;
-  name: string;
-  email: string;
-  image: string | null;
-};
+import { helperAdmin } from "@/server-actions/admin/roles/routes";
+import React from "react";
 
 export default async function Page() {
-  const res = await getRestaurantMembers();
-
-  if (!res.success) {
-    return <div>Failed to load</div>;
-  }
-
-  const members: Member[] = res.data;
-
+      await helperAdmin()
+    
   return (
-    <div className="p-10">
-       <AddMemberDialog  />
-      <MembersList members={members} />
+    <div className="min-h-screen flex justify-center items-center">
+      <h1 className="text-3xl font-bold">
+        Welcome to the Admin Page
+      </h1>
     </div>
   );
 }

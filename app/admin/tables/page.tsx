@@ -4,8 +4,11 @@ import AllTable from "@/components/Tables/AllTable";
 import CreateTableForm from "@/components/Tables/CreateTableForm";
 import { readAllTable } from "@/server-actions/admin/tables/route";
 import { Sparkles } from "lucide-react";
+import { helperAdmin } from "@/server-actions/admin/roles/routes";
 
 export default async function Page() {
+    await helperAdmin()
+  
   const res = await readAllTable();
   const data = res?.data ?? [];
 

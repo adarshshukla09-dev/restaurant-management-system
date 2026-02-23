@@ -1,7 +1,6 @@
 import { auth } from "@/lib/utils/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import AllU from "@/components/admin/AllU";
 
 export default async function HomePage() {
   const session = await auth.api.getSession({
