@@ -1,17 +1,13 @@
 "use client";
 
 import { createAuthClient } from "better-auth/client";
-import {  useRouter } from "next/navigation";
-import {  useState } from "react";
+import { useState } from "react";
 
 const authClient = createAuthClient();
 
-export default function LoginPage() {
-  
-  const router = useRouter();
+export default function SignupPage() {
   const [loading, setLoading] = useState(false);
 
- 
   const handleGoogle = async () => {
     setLoading(true);
     await authClient.signIn.social({
@@ -32,7 +28,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-md">
         <h1 className="mb-6 text-center text-2xl font-bold">
-          Sign in to your account
+          Create your account
         </h1>
 
         <div className="space-y-4">
@@ -41,7 +37,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full rounded-lg bg-red-500 py-2 text-white hover:bg-red-600 disabled:opacity-50"
           >
-            Continue with Google
+            Sign up with Google
           </button>
 
           <button
@@ -49,7 +45,7 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full rounded-lg bg-black py-2 text-white hover:bg-gray-800 disabled:opacity-50"
           >
-            Continue with GitHub
+            Sign up with GitHub
           </button>
         </div>
       </div>

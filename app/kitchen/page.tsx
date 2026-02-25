@@ -4,10 +4,10 @@ import { pendingOrder } from '@/server-actions/Kitchen/route';
 import React from 'react';
 import { Order } from '@/components/kitchen/allCard';
 import { ChefHat, Timer } from 'lucide-react';
-import { helperMember } from '@/server-actions/admin/auth/route';
+import { requireStaff } from '@/server-actions/admin/auth/route';
 
 async function Page() {
-    await helperMember()
+    await requireStaff()
   const all: Order[] = await pendingOrder();
 
   return (

@@ -1,47 +1,43 @@
-
- "use server";
-
 import { db } from "@/db";
-import { restaurantMembers, user } from "@/db/schema";
+import { restaurantMembers } from "@/db/schema";
 import { auth } from "@/lib/utils/auth";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { getRestaurantMembers } from "../roles/routes";
-export const helperAdmin = async () => {
+
+async function getCurrentMember() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session) redirect("/register");
 
-  const memberRes = await getRestaurantMembers();
-  if (!memberRes.success) redirect("/");
-
-  const member = memberRes.data.find(
-    (m) => m.userId === session.user.id
-  );
-
-  if (!member || member.role !== "ADMIN") {
-    redirect("/");
-  }
-};
-export const helperMember = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
+  const member = await db.query.restaurantMembers.findFirst({
+    where: eq(restaurantMembers.userId, session.user.id),
   });
 
-  if (!session) redirect("/register");
+  if (!member) redirect("/");
 
-  const memberRes = await getRestaurantMembers();
-  if (!memberRes.success) redirect("/");
+  return member;
+}
 
-  const member = memberRes.data.find(
-    (m) => m.userId === session.user.id
-  );
- const allowedRoles = ["ADMIN", "WAITER", "CASHIER", "KITCHEN"];
+export async function requireAdmin() {
+  const member = await getCurrentMember();
 
-  if (!member || !allowedRoles.includes(member.role)) {
+  if (member.role !== "ADMIN") {
     redirect("/");
   }
+
+  return member;
+}
+export async function requireStaff() {
+  const member = await getCurrentMember();
+
+  const allowedRoles = [ "ADMIN", "WAITER", "CASHIER", "KITCHEN"];
+
+  if (!allowedRoles.includes(member.role)) {
+    redirect("/");
+  }
+
+  return member;
 }

@@ -26,7 +26,7 @@ export const getRestaurantMembers = async () => {
     return { success: true, data: members };
   } catch (error) {
     console.log(error);
-    return { success: false, data: [] }; // ✅ ALWAYS return array
+    return { success: false, data: [] }; 
   }
 };
 
@@ -95,10 +95,7 @@ export const changeMemberRole = async ({
         .set({ role: newRole })
         .where(eq(restaurantMembers.id, memberId));
 
-      await tx
-        .update(user)
-        .set({ role: newRole })
-        .where(eq(user.id, member.userId));
+     
     });
 
     return { success: true };

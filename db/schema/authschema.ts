@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid,text, timestamp, boolean, index, pgEnum } from "drizzle-orm/pg-core";
 export const userRoles = pgEnum("user_roles", [
+
   "ADMIN",
   "WAITER",
   "CASHIER",
@@ -13,7 +14,6 @@ export const user = pgTable("users", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
-  role: userRoles("role").default("WAITER").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

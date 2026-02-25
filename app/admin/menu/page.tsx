@@ -1,9 +1,19 @@
 // app/admin/menu/page.tsx
 import { CreateMenuComp } from '@/components/menu/CreateItems'
-import { helperAdmin } from '@/server-actions/admin/roles/routes'
-
+import { auth } from '@/lib/utils/auth';
+import { requireAdmin } from '@/server-actions/admin/auth/route'
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+ 
 export default async function Page() {
-await helperAdmin()
+   const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    
+    if (!session) {
+      redirect("/register");
+    }
+await requireAdmin()
 
 
 

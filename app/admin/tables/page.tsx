@@ -4,10 +4,21 @@ import AllTable from "@/components/Tables/AllTable";
 import CreateTableForm from "@/components/Tables/CreateTableForm";
 import { readAllTable } from "@/server-actions/admin/tables/route";
 import { Sparkles } from "lucide-react";
-import { helperAdmin } from "@/server-actions/admin/roles/routes";
+import {  requireAdmin } from "@/server-actions/admin/auth/route";
+import { auth } from "@/lib/utils/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
 
 export default async function Page() {
-    await helperAdmin()
+   const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+    
+    if (!session) {
+      redirect("/register");
+    }
+    await requireAdmin()
   
   const res = await readAllTable();
   const data = res?.data ?? [];

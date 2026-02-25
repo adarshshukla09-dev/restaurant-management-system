@@ -1,14 +1,15 @@
 import AddMemberDialog from "@/components/admin/AddMemberDialog";
 import MembersList from "@/components/admin/MembersList";
 import { auth } from "@/lib/utils/auth";
-import { getRestaurantMembers, helperAdmin } from "@/server-actions/admin/roles/routes";
+import { requireAdmin } from "@/server-actions/admin/auth/route";
+import { getRestaurantMembers } from "@/server-actions/admin/roles/routes";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { date } from "zod";
 
 type Member = {
   memberId: string;
-  role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN";
+  role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN" ;
   status: "APPROVED" | "PENDING" | "REJECTED";
   userId: string;
   name: string;
@@ -24,7 +25,7 @@ export default async function Page() {
   if (!session) {
     redirect("/register");
   }
-  await helperAdmin()
+  await requireAdmin()
   const res = await getRestaurantMembers();
   if (!res.success) {
     return <div>Failed to load</div>;

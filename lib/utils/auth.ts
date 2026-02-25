@@ -1,12 +1,14 @@
 import { db } from "@/db";
 import { betterAuth } from "better-auth";
 import * as schema from "@/db/schema";
-
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { count, sql } from "drizzle-orm";
+import { ensureRestaurantMember } from "../ensure-member";
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
     provider: "pg",
-        schema,
+    schema,
   }),
 
   socialProviders: {
@@ -19,22 +21,13 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET! as string,
     },
   },
-   events: {
-    onUserCreate: async ({ user }:{ user : any}) => {
-      await db.transaction(async (tx) => {
-        const existing = await tx
-          .select()
-          .from(schema.restaurantMembers)
-          .limit(1);
 
-        const isFirstUser = existing.length === 0;
 
-        await tx.insert(schema.restaurantMembers).values({
-          userId: user.id,
-          role: isFirstUser ? "ADMIN" : "WAITER",
-          status: "APPROVED",
-        });
-      });
+  events: {
+    async afterSignIn({ user }:{ user : any}) {
+      if (!user?.id) return;
+
+      await ensureRestaurantMember(user.id);
     },
   },
 });

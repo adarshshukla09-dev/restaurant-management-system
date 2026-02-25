@@ -2,15 +2,15 @@
 
 import MemberCard from "./MemberCard";
 
-type data =  {
-    memberId: string;
-    role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN";
-    status: "APPROVED" | "PENDING" | "REJECTED";
-    userId: string;
-    name: string;
-    email: string;
-    image: string | null;
-}
+type data = {
+  memberId: string;
+  role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN" ;
+  status: "APPROVED" | "PENDING" | "REJECTED";
+  userId: string;
+  name: string;
+  email: string;
+  image: string | null;
+};
 
 export default function MembersList({ members }: { members: data[] }) {
   if (!members.length) {

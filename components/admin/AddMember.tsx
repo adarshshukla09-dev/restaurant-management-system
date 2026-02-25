@@ -11,7 +11,7 @@ type data={
         email: string;
         emailVerified: boolean;
         image: string | null;
-        role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN";
+        // role: "ADMIN" | "WAITER" | "CASHIER" | "KITCHEN";
         createdAt: Date;
         updatedAt: Date;
     }
