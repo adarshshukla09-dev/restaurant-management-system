@@ -1,5 +1,5 @@
-import AddMemberDialog from "@/components/admin/AddMemberDialog";
-import MembersList from "@/components/admin/MembersList";
+import AddMemberDialog from "@/components/admin/memeber/AddMemberDialog";
+import MembersList from "@/components/admin/memeber/MembersList";
 import { auth } from "@/lib/utils/auth";
 import { requireAdmin } from "@/server-actions/admin/auth/route";
 import { getRestaurantMembers } from "@/server-actions/admin/roles/routes";

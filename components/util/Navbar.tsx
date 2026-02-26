@@ -123,7 +123,7 @@ const navLinks = [
 ];
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-40 mb-10  px-4 py-4 pointer-events-none">
+    <div className="fixed top-0 left-0 right-0 z-100 mb-10  px-4 py-4 pointer-events-none">
       <nav className="max-w-7xl mx-auto h-16 rounded-2xl border border-white/20 bg-white/80 backdrop-blur-md shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] px-6 flex items-center justify-between pointer-events-auto">
         {/* Logo Section */}
         <Link href="/" className="flex items-center gap-2 group">

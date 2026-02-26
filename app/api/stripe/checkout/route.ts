@@ -23,6 +23,7 @@ export async function POST(req: Request) {
           quantity: quantity,
         },
       ],
+   
       success_url: `${process.env.BETTER_AUTH_URL}/success`,
       cancel_url: `${process.env.BETTER_AUTH_URL}/cancel`,
     });

@@ -111,7 +111,7 @@ export const allOrders = async (qrToken: string) => {
     const table = await db
       .select()
       .from(restaurantTables)
-      .where(eq(restaurantTables.id, qrToken))
+      .where(eq(restaurantTables.qrToken, qrToken))
       .limit(1);
 
     if (!table.length) {

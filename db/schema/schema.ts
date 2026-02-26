@@ -87,18 +87,20 @@ export const orderItems = pgTable("order_items", {
 export const payments = pgTable("payments", {
   id: uuid("id").primaryKey().defaultRandom(),
 
-  orderId: uuid("order_id")
-    .notNull()
-    .references(() => orders.id, { onDelete: "cascade" }),
+  
+  stripePaymentIntentId: text("stripe_payment_intent_id").unique(),
 
   amount: integer("amount").notNull(),
+  currency: text("currency").notNull().default("usd"),
 
   method: text("method").notNull(), // CASH | UPI | CARD
-  status: text("status").notNull(), // SUCCESS | FAILED
+  status: text("status").notNull(), // SUCCESS | FAILED | PENDING
 
-  paidAt: timestamp("paid_at").defaultNow(),
+  failureReason: text("failure_reason"),
+
+  paidAt: timestamp("paid_at"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
-
 
 
 export const restaurantMembers = pgTable("restaurant_members", {

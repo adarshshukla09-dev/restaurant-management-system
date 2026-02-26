@@ -28,14 +28,14 @@ export async function requireAdmin() {
     redirect("/");
   }
 
+
   return member;
 }
-export async function requireStaff() {
+export async function requireStaff(reqRole :string) {
   const member = await getCurrentMember();
+const roles = member.role;
 
-  const allowedRoles = [ "ADMIN", "WAITER", "CASHIER", "KITCHEN"];
-
-  if (!allowedRoles.includes(member.role)) {
+  if (roles !== "ADMIN" && roles != reqRole ) {
     redirect("/");
   }
 

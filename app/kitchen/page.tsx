@@ -7,7 +7,7 @@ import { ChefHat, Timer } from 'lucide-react';
 import { requireStaff } from '@/server-actions/admin/auth/route';
 
 async function Page() {
-    await requireStaff()
+    await requireStaff("KITCHEN")
   const all: Order[] = await pendingOrder();
 
   return (

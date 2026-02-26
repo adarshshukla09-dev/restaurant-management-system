@@ -65,7 +65,7 @@ function TCard({ data }: { data: Data }) {
             </DialogHeader>
 
             <div className="flex flex-col gap-4">
-              <AllOrder tableId={data.id} />
+              <AllOrder tableId={data.qrToken} />
 
              
             </div>

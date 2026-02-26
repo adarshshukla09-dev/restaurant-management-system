@@ -3,6 +3,7 @@ import { auth } from "@/lib/utils/auth";
 import { requireAdmin } from "@/server-actions/admin/auth/route";
 import React from "react";
 import { redirect } from "next/navigation";
+import { todOrder } from "@/server-actions/admin/others/route";
 
 export default  async function Page() {
 
@@ -13,10 +14,11 @@ export default  async function Page() {
    if (!session) {
      redirect("/register");
    }
-      await requireAdmin()
+ await requireAdmin()
+//  await todOrder()
       
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div className="h-[80vh] flex justify-center items-center">
      <div>
       {session?.user ?    <h1 className="text-3xl font-bold">
         Welcome to the Admin Page

@@ -5,7 +5,7 @@ import TCard from './TCard';
 async function AllInfo() {
   const allTable = await readAllTable();
   const data = allTable?.data;
-
+console.log(data)
   return (
     <div className="max-w-7xl grid grid-cols-3 mx-auto my-2 gap-4">
       {data?.map((table) => (
