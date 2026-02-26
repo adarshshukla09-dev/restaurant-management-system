@@ -7,7 +7,7 @@ import {
   integer,
   boolean,
 } from "drizzle-orm/pg-core";
-import { user, userRoles } from "./authschema";
+import { session, user, userRoles } from "./authschema";
 
 export const tableStatus = pgEnum("table_status", [
   "FREE",
@@ -53,13 +53,30 @@ export const menu = pgTable("menu", {
   category: text("category").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
+export const sessionStatus = pgEnum("session_status", [
+  "ACTIVE",
+  "CLOSED",
+]);
+
+export const tableSessions = pgTable("table_sessions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+
+  tableId: uuid("table_id")
+    .notNull()
+    .references(() => restaurantTables.id, { onDelete: "cascade" }),
+
+  status: sessionStatus("status").default("ACTIVE").notNull(),
+
+  startedAt: timestamp("started_at").defaultNow(),
+  endedAt: timestamp("ended_at"),
+});
 
 export const orders = pgTable("orders", {
   id: uuid("id").primaryKey().defaultRandom(),
  
-  tableId: uuid("table_id")
-    .notNull()
-    .references(() => restaurantTables.id, { onDelete: "cascade" }),
+ sessionId: uuid("session_id")
+  .notNull()
+  .references(() => tableSessions.id, { onDelete: "cascade" }),
   waiterId: text("waiter_id").references(() => user.id),
   status: orderStatus("status").default("PENDING").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
@@ -89,8 +106,10 @@ export const payments = pgTable("payments", {
 
   
   stripePaymentIntentId: text("stripe_payment_intent_id").unique(),
-
-  amount: integer("amount").notNull(),
+sessionId: uuid("session_id")
+  .notNull()
+  .references(() => tableSessions.id, { onDelete: "cascade" }),
+    amount: integer("amount").notNull(),
   currency: text("currency").notNull().default("usd"),
 
   method: text("method").notNull(), // CASH | UPI | CARD

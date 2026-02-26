@@ -43,8 +43,10 @@ const res = await CancelOrder(order.id);
         <p><span className="font-semibold">Quantity:</span> {order.quantity}</p>
         <p><span className="font-semibold">Total:</span> {order.itemPrice * order.quantity} </p>
     
-      <div className='float-end mx-auto'>
-<Button onClick={handleCancel} > Cancel Order</Button></div>
+  {order.status == "PENDING" && <div className='float-end mx-auto'>
+<Button onClick={handleCancel} > Cancel Order</Button>
+</div>
+} 
   </div>
       <div className="mt-4 text-xs text-slate-400 break-all">
         ID: {order.id}

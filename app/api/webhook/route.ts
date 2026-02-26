@@ -1,13 +1,18 @@
-import { savePaymentToDB } from "@/server-actions/payment/route";
-import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-// import savePaymentToDB from "@/server-actions/payment"
+import { headers } from "next/headers";
+import { db } from "@/db";
+import { tableSessions, restaurantTables, payments } from "@/db/schema/schema";
+import { eq } from "drizzle-orm";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
-export async function POST(req: NextRequest) {
-  const body = await req.text(); // IMPORTANT: raw body
-  const sig = req.headers.get("stripe-signature")!;
+export async function POST(req: Request) {
+  const body = await req.text();
+  const headersList = await headers();
+const sig = headersList.get("stripe-signature");
+  if (!sig) {
+    return new Response("Missing stripe signature", { status: 400 });
+  }
 
   let event: Stripe.Event;
 
@@ -18,18 +23,39 @@ export async function POST(req: NextRequest) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (err) {
-    return new NextResponse(
-      err instanceof Error ? err.message : "Webhook Error",
-      { status: 400 }
-    );
+    return new Response("Webhook error", { status: 400 });
   }
 
-  // Handle successful payment
   if (event.type === "payment_intent.succeeded") {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
 
-    await savePaymentToDB(paymentIntent);
+    const sessionId = paymentIntent.metadata.sessionId;
+    const tableId = paymentIntent.metadata.tableId;
+
+    // 1️⃣ Save payment
+    await db.insert(payments).values({
+      stripePaymentIntentId: paymentIntent.id,
+      sessionId,
+      amount: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      method: "CARD",
+      status: "SUCCESS",
+      paidAt: new Date(),
+    });
+
+    await db
+      .update(tableSessions)
+      .set({
+        status: "CLOSED",
+        endedAt: new Date(),
+      })
+      .where(eq(tableSessions.id, sessionId));
+
+    await db
+      .update(restaurantTables)
+      .set({ status: "FREE" })
+      .where(eq(restaurantTables.id, tableId));
   }
 
-  return NextResponse.json({ received: true });
+  return new Response("OK", { status: 200 });
 }
