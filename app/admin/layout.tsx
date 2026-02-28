@@ -5,6 +5,7 @@ import { auth } from "@/lib/utils/auth"
 import { headers } from "next/headers"
 import { ensureRestaurantMember } from "@/lib/ensure-member"
 import AdminNavbar from "@/components/admin/dashboard/AdminNavbar"
+import Navbar from "@/components/util/Navbar"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+       
         {/* Page Content */}
         <main className="pb-24">{children}</main>
 
