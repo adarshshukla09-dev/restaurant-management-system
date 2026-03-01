@@ -22,9 +22,7 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: 'DineFlow',
   description: 'Restaurant Management System',
-  // icons: {
-  //   icon: '/favicon.ico', // This points specifically to the public folder
-  // },
+
 };
 
 // Recommended for responsive SaaS apps

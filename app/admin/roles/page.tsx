@@ -31,7 +31,7 @@ export default async function Page() {
     return <div>Failed to load</div>;
   }
 
-  const members: Member[] = res.data;
+  const members: Member[] = res?.data ?? [];
 
   return (
     <div className="p-10">
