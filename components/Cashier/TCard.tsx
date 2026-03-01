@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AllOrder from "./AllOrder";
-import { Button } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
 
 type Data = {
   id: string;

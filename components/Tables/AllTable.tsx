@@ -25,7 +25,6 @@ function AllTable({ table }: { table: TableData }) {
   };
 const handleDelete= async (id:string)=>{
 const del = await deleteTable(id)
-console.log(del)
 }
   return (
     <div className="relative group p-1 rounded-3xl overflow-hidden shadow-xl transition-transform duration-300 hover:scale-[1.03]">

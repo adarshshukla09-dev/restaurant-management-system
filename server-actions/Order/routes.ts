@@ -106,7 +106,6 @@ export const buyFromCart = async (
         quantity: i.quantity,
       }))
     );
-console.log(order)
     revalidatePath(`/menu/${qrToken}`);
 
     return { success: true };
@@ -170,8 +169,11 @@ const activeOrder = await db
       .from(orderItems)
       .where(eq(orderItems.orderId, orderId));
 
-    return { success: true, data: items };
-  } catch (error) {
+return {
+  success: true,
+  data: items,
+  tableSessionId: session[0].id, // ✅ clean
+};  } catch (error) {
     console.error(error);
     throw error;
   }

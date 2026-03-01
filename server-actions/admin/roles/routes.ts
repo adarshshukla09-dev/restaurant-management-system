@@ -25,8 +25,7 @@ export const getRestaurantMembers = async () => {
 
     return { success: true, data: members };
   } catch (error) {
-    console.log(error);
-    return { success: false, data: [] }; 
+       return {status:500 , success:false,message:error instanceof Error ? error.message : "something went wrong" }
   }
 };
 
@@ -35,8 +34,7 @@ export const getAllUsers = async () => {
     const users = await db.select().from(user);
     return { success: true, data: users };
   } catch (error) {
-    console.log(error);
-    return { success: false };
+       return {status:500 , success:false,message:error instanceof Error ? error.message : "something went wrong" }
   }
 };
 export const createMember = async ({ userId }: { userId: string }) => {
@@ -66,11 +64,8 @@ export const createMember = async ({ userId }: { userId: string }) => {
       message: "Member added successfully",
     };
   } catch (error) {
-    console.log(error);
-    return {
-      success: false,
-      message: "Something went wrong",
-    };
+       return {status:500 , success:false,message:error instanceof Error ? error.message : "something went wrong" }
+
   }
 };
 export const changeMemberRole = async ({
@@ -100,7 +95,6 @@ export const changeMemberRole = async ({
 
     return { success: true };
   } catch (error) {
-    console.log(error);
-    return { success: false };
+    return {status:500 , message:error instanceof Error ? error.message : "something went wrong" }
   }
 };

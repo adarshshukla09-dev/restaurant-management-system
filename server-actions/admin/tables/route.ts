@@ -18,9 +18,8 @@ export const createTable = async (
 
     return { success: true, data: newTable };
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "something went wrong"
-    );
+          return {status:500 , success:false,message:error instanceof Error ? error.message : "something went wrong" }
+
   }
 };
 export const readAllTable = async ( 
@@ -29,9 +28,8 @@ export const readAllTable = async (
     const AllTable =await db.select().from(restaurantTables)
     return{ sucess:true,data:AllTable}
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "something went wrong",
-    );
+          return {status:500 , success:false,message:error instanceof Error ? error.message : "something went wrong" }
+
   }
 };
 export const deleteTable = async ( id:string) => {
@@ -40,8 +38,7 @@ export const deleteTable = async ( id:string) => {
     revalidatePath("/admin/tables")
     return { success:true , data: deleteTable}
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "something went wrong",
-    );
+           return {status:500 , success:false,message:error instanceof Error ? error.message : "something went wrong" }
+
   }
 };

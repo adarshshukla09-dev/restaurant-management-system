@@ -1,5 +1,7 @@
 import React from 'react';
-import { ChevronRight, Play } from 'lucide-react';
+import { ChevronRight, Play, Github, Mail } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '../ui/button';
 
 const Hero = () => {
   return (
@@ -21,13 +23,27 @@ const Hero = () => {
             All-in-one Restaurant Management System for tables, orders, staff, and payments. Experience the flow with DineFlow.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          {/* Main CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
+<Link href={"/register"}>
             <button className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-2xl font-bold transition-all transform hover:scale-105 shadow-xl shadow-orange-200">
-              Start Free Trial <ChevronRight size={20} />
+              Get Started <ChevronRight size={20} />
             </button>
-            <button className="flex items-center justify-center gap-2 bg-white border-2 border-slate-200 hover:border-orange-200 text-slate-700 px-8 py-4 rounded-2xl font-bold transition-all">
-              <Play size={18} className="fill-slate-700" /> Book Demo
-            </button>
+</Link>
+           
+          </div>
+
+          {/* Social/Contact Links */}
+          <div className="flex items-center justify-center lg:justify-start gap-6 text-slate-500">
+            <Link href="https://github.com/adarshshukla09-dev/restaurant-management-system" className="flex items-center gap-2 hover:text-slate-900 transition-colors">
+              <Github size={20} />
+              <Button className="text-sm font-medium">GitHub</Button>
+            </Link>
+            <div className="w-px h-4 bg-slate-300"></div>
+            <Link href="mailto:adarsh.pccoer@gmail.com" className="flex items-center gap-2 hover:text-orange-600 transition-colors">
+              <Mail size={20} />
+              <Button className="text-sm font-medium">Contact Sales</Button>
+            </Link>
           </div>
         </div>
 

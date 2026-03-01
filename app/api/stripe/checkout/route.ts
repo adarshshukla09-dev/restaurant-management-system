@@ -6,7 +6,7 @@ apiVersion: "2026-01-28.clover",});
 
 export async function POST(req: Request) {
   try {
-    const { name, amount, quantity } = await req.json();
+    const { name, amount, quantity,tableSessionId } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
@@ -23,7 +23,11 @@ export async function POST(req: Request) {
           quantity: quantity,
         },
       ],
-   
+    payment_intent_data: {
+    metadata: {
+      tableSessionId: tableSessionId, // ✅ ADD THIS
+    },
+  },
       success_url: `${process.env.BETTER_AUTH_URL}/success`,
       cancel_url: `${process.env.BETTER_AUTH_URL}/cancel`,
     });

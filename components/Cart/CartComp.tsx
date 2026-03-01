@@ -15,7 +15,6 @@ function CartComp() {
 
     const tId = localStorage.getItem("tableId");
     if(tId)  setTableId(tId);
-    console.log(tableId);
   },[])
   const handleOrder = async () => {
     if (cart.length === 0) return;

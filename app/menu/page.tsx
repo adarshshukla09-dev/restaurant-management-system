@@ -26,8 +26,7 @@ async function Page({ searchParams }: PageProps) {
     
   const menu = await readAll();
   const data: Data[] = menu?.data || [];
-  console.log(table);
-  return (
+ return (
     <div className="container mx-auto py-10 space-y-10">
       <div className="flex flex-col items-center gap-4">
         <div className="flex justify-around gap-2 w-full">

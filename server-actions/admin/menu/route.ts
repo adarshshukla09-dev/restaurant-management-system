@@ -19,12 +19,9 @@ export const createItem = async (menuItem: MenuItemInput) => {
       .values({ ...data })
       .returning();
       revalidatePath("/menu")
-console.log(newItem)
     return { success: true, data: newItem };
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "some internal server error",
-    );
+   
   }
 };
 
@@ -34,9 +31,7 @@ export const readAll = async () => {
 
     return { success :true , data :wholeMenu}
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "some internal server error",
-    );
+   
   }
 };
 export const readItem = async (  id: string,
@@ -46,9 +41,7 @@ export const readItem = async (  id: string,
 
     return { success :true , data :item}
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "some internal server error",
-    );
+   
   }
 };
 export const updateItem = async (
@@ -68,13 +61,10 @@ export const updateItem = async (
       .set(result.data)
       .where(eq(menu.id, id))
       .returning();
-console.log(updated)
-      revalidatePath("/menu")
+        revalidatePath("/menu")
     return { success: true, data: updated };
   } catch (error) {
-    console.log(
-      error instanceof Error ? error.message : "some internal error"
-    );
+   
     return { error: "Internal server error" };
   }
 };
@@ -87,9 +77,7 @@ try {
 
     return { success: true, data: deleted };
 } catch (error) {
-  console.log(
-      error instanceof Error ? error.message : "some internal error"
-    );
-    return { error: "Internal server error" };
-}
-}
+ 
+        return {status:500 , message:error instanceof Error ? error.message : "something went wrong" }
+
+}}

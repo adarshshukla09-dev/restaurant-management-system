@@ -20,6 +20,7 @@ interface  data{
     }
 function AllOrder({ tableId }: { tableId: string }) {
   const [data, setData] = useState<data[]>([])
+const [tableSessionId, setTableSessionId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true)
   const totalAmount = data.reduce(
   (acc, item) => acc + item.itemPrice * item.quantity,
@@ -30,43 +31,46 @@ const totalQuantity = data.reduce(
   (acc, item) => acc + item.quantity,
   0
 );
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const orders = await allOrders(tableId)
-      setData(orders.data)
-      setLoading(false)
-    }
-    fetchOrders()
-  }, [tableId])
+ useEffect(() => {
+  const fetchOrders = async () => {
+    const orders = await allOrders(tableId);
+if(orders.tableSessionId){
+    setTableSessionId(orders.tableSessionId); }// ✅ correct
+    setData(orders.data);
+    setLoading(false);
+  };
+
+  fetchOrders();
+}, [tableId]);
 
   if (loading) return <p>Loading...</p>
-      console.log(data)
 
-  const handleCheckout  = async () => {
-  try {
-    const res = await fetch("/api/stripe/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: "all-orders",
-        amount: totalAmount * 100, // Stripe needs smallest unit
-        quantity: totalQuantity,
-      }),
-    });
-
-    const session = await res.json();
-console.log(session)
-    if (!session.url) {
-      throw new Error("No checkout URL returned");
-    }
-
-    window.location.href = session.url;
-
-  } catch (error) {
-    console.error(error);
+const handleCheckout = async () => {
+  if (!tableSessionId) {
+    alert("No active session");
+    return;
   }
+
+  const res = await fetch("/api/stripe/checkout", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: "all-orders",
+      amount: totalAmount * 100,
+      quantity: totalQuantity,
+      tableSessionId: tableSessionId, // ✅ SEND THIS
+    }),
+  });
+
+  const session = await res.json();
+
+  if (!session.url) {
+    throw new Error("No checkout URL returned");
+  }
+
+  window.location.href = session.url;
 };
 
   return (

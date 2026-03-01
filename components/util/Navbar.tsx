@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/sheet";
 import { authClient } from "@/lib/utils/auth-client";
 import { getRestaurantMembers } from "@/server-actions/admin/roles/routes";
+import Image from "next/image";
 
 function Navbar() {
   const [tableId, setTableId] = useState<string | null>(null);
@@ -106,8 +107,13 @@ function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
           <div className="bg-orange-500 p-2 rounded-xl group-hover:rotate-12 transition-transform">
-            <ChefHat className="text-white size-5" />
-          </div>
+<Image
+      src="/icon.svg"
+      alt="Khana Khazana Logo"
+      width={20}
+      height={20}
+      className="group-hover:rotate-12 transition-transform"
+    />          </div>
           <span className="text-xl font-black tracking-tighter text-slate-900 italic">
             KHANA <span className="text-orange-500">KHAZANA</span>
           </span>

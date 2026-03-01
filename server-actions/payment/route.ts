@@ -1,13 +1,12 @@
 import Stripe from "stripe";
 import { payments } from "@/db/schema";
 import { db } from "@/db";
+import { date } from "zod";
 
 export async function savePaymentToDB(
   paymentIntent: Stripe.PaymentIntent
 ) {
   try {
-
-    // 🔁 Map Stripe status to your DB status
     let status: "SUCCESS" | "FAILED" | "PENDING" = "PENDING";
 
     if (paymentIntent.status === "succeeded") {
@@ -16,28 +15,36 @@ export async function savePaymentToDB(
       status = "FAILED";
     }
 
-    const data = {
-      orderId: paymentIntent.metadata.orderId, // make sure you send this!
-      stripePaymentIntentId: paymentIntent.id,
+    const tableSessionId = paymentIntent.metadata.tableSessionId;
 
+    if (!tableSessionId) {
+      throw new Error("Missing tableSessionId in metadata");
+    }
+
+    await db.insert(payments).values({
+      stripePaymentIntentId: paymentIntent.id,
+      sessionId: tableSessionId, // ✅ FIXED
       amount: paymentIntent.amount,
       currency: paymentIntent.currency,
-
-      method: "CARD", // Stripe = CARD
+      method: "CARD",
       status,
-
       failureReason: paymentIntent.cancellation_reason ?? null,
-
       paidAt:
         paymentIntent.status === "succeeded"
           ? new Date(paymentIntent.created * 1000)
           : null,
-    };
-
-    await db.insert(payments).values(data);
-
+    });
   } catch (error) {
-    console.error("Error saving payment:", error);
-    throw error;
+        return {status:500 , message:error instanceof Error ? error.message : "something went wrong" }
+
+  }
+}
+
+export const readAllPayment = async()=>{
+  try {
+    const allPayment = await db.select().from(payments)
+    return {status:200 , data :allPayment}
+  } catch (error) {
+    return {status:500 , message:error instanceof Error ? error.message : "something went wrong" }
   }
 }

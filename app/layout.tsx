@@ -19,9 +19,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "DineFlow | Smart Restaurant Management",
-  description: "Manage orders, tables, and staff seamlessly.",
+export const metadata = {
+  title: 'DineFlow',
+  description: 'Restaurant Management System',
+  // icons: {
+  //   icon: '/favicon.ico', // This points specifically to the public folder
+  // },
 };
 
 // Recommended for responsive SaaS apps
