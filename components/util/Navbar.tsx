@@ -76,7 +76,7 @@ function Navbar() {
   const navLinks = useMemo(() => {
     const base = [
       { name: "Menu", href: "/menu", icon: MenuSquare, color: "hover:text-orange-500" },
-      { name: "Order", href: "/order", icon: ListOrdered, color: "hover:text-purple-500" },
+      { name: "Order", href: "/orders", icon: ListOrdered, color: "hover:text-purple-500" },
       { name: "Cart", href: "/Cart", icon: ShoppingCartIcon, color: "hover:text-emerald-500" },
     ];
 

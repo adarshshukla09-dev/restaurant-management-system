@@ -1,42 +1,53 @@
-import Stripe from "stripe";
 import { NextResponse } from "next/server";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-apiVersion: "2026-01-28.clover",});
+import { stripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
   try {
-    const { name, amount, quantity,tableSessionId } = await req.json();
+    const { name, amount, quantity, tableSessionId } = await req.json();
+
+    if (!tableSessionId) {
+      return NextResponse.json(
+        { error: "Missing tableSessionId" },
+        { status: 400 }
+      );
+    }
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
+
+      metadata: {
+        tableSessionId, // ✅ important
+      },
+
+      payment_intent_data: {
+        metadata: {
+          tableSessionId,
+        },
+      },
+
       line_items: [
         {
           price_data: {
             currency: "inr",
             product_data: {
-              name: name,
+              name,
             },
-            unit_amount: amount, // already multiplied by 100 in frontend
+            unit_amount: amount, // must be in paise
           },
-          quantity: quantity,
+          quantity,
         },
       ],
-    payment_intent_data: {
-    metadata: {
-      tableSessionId: tableSessionId, // ✅ ADD THIS
-    },
-  },
-      success_url: `${process.env.BETTER_AUTH_URL}/success`,
-      cancel_url: `${process.env.BETTER_AUTH_URL}/cancel`,
+
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,
     });
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error("Stripe error:", error);
+    console.error(error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: "Checkout creation failed" },
       { status: 500 }
     );
   }

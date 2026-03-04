@@ -25,7 +25,7 @@ export default async function Page() {
 
   const tablesWithQR = await Promise.all(
     data.map(async (table: any) => {
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+      const baseUrl = process.env.NEXT_PUBLIC_APP_URL ;
       const url = `${baseUrl}/menu?table=${table.qrToken}`;
       const qrImage = await QRCode.toDataURL(url, {
         margin: 2,

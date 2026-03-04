@@ -17,7 +17,7 @@ function Page() {
     <div className="min-h-screen bg-[#F8FAFC] py-12">
       <div className="max-w-7xl mx-auto px-6">
         {tableId ? (
-          <AllOrder tableId={tableId} />
+          <AllOrder tableId={tableId}  />
         ) : (
           <div className="flex flex-col items-center justify-center py-40 bg-white rounded-[3rem] border-2 border-dashed border-slate-200">
             <div className="bg-slate-100 p-6 rounded-full mb-4 text-slate-400">

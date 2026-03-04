@@ -58,7 +58,7 @@ const handleCheckout = async () => {
     },
     body: JSON.stringify({
       name: "all-orders",
-      amount: totalAmount * 100,
+      amount: totalAmount ,
       quantity: totalQuantity,
       tableSessionId: tableSessionId, // ✅ SEND THIS
     }),
