@@ -57,18 +57,13 @@ const handleCheckout = async () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: "all-orders",
-      amount: totalAmount ,
-      quantity: totalQuantity,
-      tableSessionId: tableSessionId, // ✅ SEND THIS
+      name: "table-bill",
+      amount: totalAmount, // convert to paise
+      tableSessionId,
     }),
   });
 
   const session = await res.json();
-
-  if (!session.url) {
-    throw new Error("No checkout URL returned");
-  }
 
   window.location.href = session.url;
 };

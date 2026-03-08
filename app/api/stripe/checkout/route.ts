@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe";
 
 export async function POST(req: Request) {
   try {
-    const { name, amount, quantity, tableSessionId } = await req.json();
+    const { name, amount, tableSessionId } = await req.json();
 
     if (!tableSessionId) {
       return NextResponse.json(
@@ -14,16 +14,9 @@ export async function POST(req: Request) {
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card"],
 
       metadata: {
-        tableSessionId, // ✅ important
-      },
-
-      payment_intent_data: {
-        metadata: {
-          tableSessionId,
-        },
+        tableSessionId,
       },
 
       line_items: [
@@ -33,9 +26,9 @@ export async function POST(req: Request) {
             product_data: {
               name,
             },
-            unit_amount: amount, // must be in paise
+            unit_amount: amount, // amount in paise
           },
-          quantity,
+          quantity: 1,
         },
       ],
 
@@ -45,7 +38,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ url: session.url });
   } catch (error) {
-    console.error(error);
+    console.error("Stripe checkout error:", error);
+
     return NextResponse.json(
       { error: "Checkout creation failed" },
       { status: 500 }
